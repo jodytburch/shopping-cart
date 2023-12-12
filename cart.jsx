@@ -102,25 +102,31 @@ const Products = (props) => {
   const addToCart = (e) => {
     let name = e.target.name;
     let item = items.filter((item) => item.name == name);
+    // if item not in stock, return.  Else decrease instock number and add to cart
+    if (item[0].instock == 0) return;
+    item[0].instock--;
     console.log(`add to Cart ${JSON.stringify(item)}`);
     setCart([...cart, ...item]);
     //doFetch(query);
   };
   const deleteCartItem = (index) => {
+    //find product in items product list where name = cart[index].name and then add 1 to instock;
+    let deletedItem = items.filter((item) => item.name == cart[index].name);
     let newCart = cart.filter((item, i) => index != i);
+    console.log(`index = ${index} and newcart = ${JSON.stringify(newCart)}`);
+    deletedItem[0].instock++;
     setCart(newCart);
   };
   const photos = ["apple.png", "orange.png", "beans.png", "cabbage.png"];
 
   let list = items.map((item, index) => {
-    //let n = index + 1049;
-    //let url = "https://picsum.photos/id/" + n + "/50/50";
-
+    let n = index + 1049;
+    let url = "https://picsum.photos/id/" + n + "/50/50";
     return (
       <li key={index}>
-        <Image src={photos[index % 4]} width={70} roundedCircle></Image>
+        <Image src={url} width={70} roundedCircle></Image>
         <Button variant="primary" size="large">
-          {item.name}:{item.cost}
+          {item.name}:${item.cost} , remaining: {item.instock}
         </Button>
         <input name={item.name} type="submit" onClick={addToCart}></input>
       </li>
@@ -189,7 +195,7 @@ const Products = (props) => {
       </Row>
       <Row>
         <form
-          onSubmit={(event) => {
+          onsubmit={(event) => {
             restockProducts(`http://localhost:1337/${query}`);
             console.log(`Restock called on ${query}`);
             event.preventDefault();
