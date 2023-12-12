@@ -33,7 +33,7 @@ const useDataApi = (initialUrl, initialData) => {
         const result = await axios(url);
         console.log("FETCH FROM URl");
         if (!didCancel) {
-          dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+          dispatch({ type: "FETCH_SUCCESS", payload: result.data.data });
         }
       } catch (error) {
         if (!didCancel) {
@@ -117,7 +117,7 @@ const Products = (props) => {
     deletedItem[0].instock++;
     setCart(newCart);
   };
-  const photos = ["apple.png", "orange.png", "beans.png", "cabbage.png"];
+  //const photos = ["apple.png", "orange.png", "beans.png", "cabbage.png"];
 
   let list = items.map((item, index) => {
     let n = index + 1049;
@@ -128,7 +128,7 @@ const Products = (props) => {
         <Button variant="primary" size="large">
           {item.name}:${item.cost} , remaining: {item.instock}
         </Button>
-        <input name={item.name} type="submit" onClick={addToCart}></input>
+        <input name={item.name} type="submit" value="Add to Cart" onClick={addToCart}></input>
       </li>
     );
   });
@@ -195,7 +195,7 @@ const Products = (props) => {
       </Row>
       <Row>
         <form
-          onsubmit={(event) => {
+          onSubmit={(event) => {
             restockProducts(`http://localhost:1337/${query}`);
             console.log(`Restock called on ${query}`);
             event.preventDefault();
@@ -206,7 +206,7 @@ const Products = (props) => {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <button type="submit">ReStock Products</button>
+          <input type="submit" value="ReStock Products"/>
         </form>
       </Row>
     </Container>
