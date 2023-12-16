@@ -117,7 +117,6 @@ const Products = (props) => {
     deletedItem[0].instock++;
     setCart(newCart);
   };
-  //const photos = ["apple.png", "orange.png", "beans.png", "cabbage.png"];
 
   let list = items.map((item, index) => {
     let n = index + 1049;
